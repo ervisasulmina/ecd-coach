@@ -160,7 +160,7 @@ ecd-coach/
 │ └── safety_response_tool.py # Safe medical wording templates
 ├── memory/
 │ └── session_manager.py # Stores child profile and session state
-└── kaggle_writeup_draft.md
+└── kaggle_writeup_draft.md # Kaggle final submission draft
 
 ---
 
@@ -232,30 +232,173 @@ ecd-coach/
 
 ---
 
-## 6. Features Used (for the rubric)
+## 6. Features Used (Competition Requirements)
 
-- **Multi-agent system**:
-  - Sequential agents (milestone → planner → mentor → safety)
-- **Tools**:
-  - Custom tool: `ChildAgeDBTool` (milestone database)
-  - `SafetyResponseTool` (safe health wording)
-- **Sessions & Memory**:
-  - `SessionManager` storing child profile (age, interests, last behavior)
-- (Optional) Observability / logging and Gemini integration
+ECD-Coach implements multiple core features from the “Features to Include in Your Agent Submission” section of the competition.
+
+### **1. Multi-Agent System**
+The system uses a **team of four specialized agents** working in a sequential workflow:
+
+1. **Milestone Analyst Agent** – age-based interpretation and memory updates  
+2. **Activity Planner Agent** – personalized developmental play ideas  
+3. **Parent Mentor Agent** – emotional support and empathy  
+4. **Safety Agent** – final review and safe output  
+
+This separation of roles demonstrates meaningful multi-agent design instead of a single monolithic model.
+
+---
+
+### **2. Tools**
+The project uses both **custom tools** and **built-in logic**:
+
+- 🧰 **Custom Tool:**  
+  **`ChildAgeDBTool`**  
+  - A miniature milestone database for ages 30–36 months.  
+  - Provides structured age-range info and descriptions.  
+  - Demonstrates tool-based grounding and context enrichment.
+
+- 🛡️ **Safety Tool:**  
+  **`SafetyResponseTool`**  
+  - Provides canned medical-safe templates.  
+  - Ensures no unsafe or diagnostic advice is generated.
+
+These tools show how agents rely on structured external sources instead of LLM hallucinations.
+
+---
+
+### **3. Sessions & Memory**
+ECD-Coach uses a simple, extensible memory layer:
+
+- **`SessionManager`** stores:
+  - age_months  
+  - child interests (cars, animals, etc.)  
+  - last behavior description  
+- **Milestone Analyst** updates memory after each analysis  
+- **Activity Planner** reads memory to personalize activities  
+- **Parent Mentor** uses memory to contextualize emotional responses
+
+This demonstrates both **short-term session memory** and **basic long-term profile storage**.
+
+---
+
+### **4. Context Engineering**
+The system uses multiple context-engineering strategies:
+
+- Age bucketing (30–36 months)  
+- Separation of logic into agents → reduces context overload  
+- Safety Agent ensures high-risk context is rewritten  
+- Milestone tool provides compressed structured context  
+- Clean orchestration in `main.py` ensures deterministic flow
+
+---
+
+### **5. Observability (Planned / Partial)**
+The architecture includes placeholder logging points where:
+
+- user inputs  
+- agent outputs  
+- memory updates  
+
+could be recorded for debugging and transparency.
+
+This addresses the competition’s emphasis on **observability**.
+
+---
+
+### **6. Gemini Integration (Planned / Partial)**
+ECD-Coach is designed to integrate Gemini in:
+
+- **Milestone Analyst Agent** → generating more natural explanations  
+- **Parent Mentor Agent** → empathetic and supportive language  
+
+This will enhance clarity, tone, and quality.  
+Even though Gemini is not fully implemented in the code at this moment, the architectural hooks and documentation show clear intent and integration design.
 
 ---
 
 ## 7. Implementation Details
 
-- Short explanation of:
-  - `main.py` (orchestrator)
-  - `agents/` package
-  - `tools/` package
-  - `memory/` package
-- How to run locally:
-  - `git clone`
-  - `pip install -r requirements.txt`
-  - `python main.py`
+### **1. Core File: `main.py`**
+`main.py` acts as the orchestrator of the multi-agent workflow.  
+It:
+
+- Initializes all agents, tools, and memory  
+- Defines a sample input scenario  
+- Runs:
+  1. Milestone analysis  
+  2. Activity planning  
+  3. Emotional support  
+  4. Safety review  
+- Combines results into a complete output  
+
+This provides a reproducible test of the entire system.
+
+---
+
+### **2. Agents (`agents/` directory)**
+
+#### **`milestone_agent.py`**
+- Uses `ChildAgeDBTool` to retrieve age-bucketed milestone ranges  
+- Generates clear explanations with disclaimers  
+- Stores child age & behavior description to memory  
+
+#### **`activity_planner_agent.py`**
+- Produces age-appropriate developmental activities  
+- Incorporates child interests (cars, animals, puzzles)  
+- Accepts constraints like indoor/outdoor  
+- Outputs multi-category activities:
+  - fine motor  
+  - gross motor  
+  - language  
+  - pretend play  
+
+#### **`mentor_agent.py`**
+- Pattern-based emotional reasoning (worry, guilt, social conflict, generic support)  
+- Generates warm, empathetic parenting guidance  
+- Uses memory for contextual personalization  
+
+#### **`safety_agent.py`**
+- Wraps agent outputs  
+- Filters or rewrites unsafe health-related content  
+- Uses `SafetyResponseTool` to provide safe alternatives  
+
+---
+
+### **3. Tools (`tools/` directory)**
+
+#### **`child_age_db_tool.py`**
+- Hard-coded sample milestone database (expandable)  
+- Returns `MilestoneInfo` objects with:
+  - age_range  
+  - summary of developmental expectations  
+  - notes  
+
+#### **`safety_response_tool.py`**
+- Provides templates for medical-safe guidance  
+- Used by the Safety Agent  
+
+---
+
+### **4. Memory (`memory/` directory)**
+
+#### **`session_manager.py`**
+- Stores the child profile in a simple dictionary  
+- Memory persists across all agents during a session  
+- Key fields:
+  - age_months  
+  - interests  
+  - last_behavior_description  
+
+---
+
+### **5. How to Run the Project Locally**
+
+```bash
+git clone https://github.com/ervisasulmina/ecd-coach.git
+cd ecd-coach
+pip install -r requirements.txt
+python main.py
+
 
 ---
 
