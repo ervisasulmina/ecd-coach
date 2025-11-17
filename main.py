@@ -61,11 +61,12 @@ def run_demo():
     print("Milestone Analyst Output:\n", milestone_output, "\n")
 
     # 2️⃣ Activity planning
-    activity_output = planner_agent.plan_activities(age_months)
+    constraints = {"setting": "indoor"}  # you could change this to "outdoor"
+    activity_output = planner_agent.plan_activities(age_months, constraints=constraints)
     activity_output_str = "\n".join(activity_output)
     activity_output_str = safety_agent.review("", activity_output_str)
     print("Activity Planner Output:\n", activity_output_str, "\n")
-
+    
     # 3️⃣ Mentor response
     mentor_output = mentor_agent.respond(parent_concern)
     mentor_output = safety_agent.review(parent_concern, mentor_output)
