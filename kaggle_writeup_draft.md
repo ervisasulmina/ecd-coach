@@ -398,7 +398,7 @@ git clone https://github.com/ervisasulmina/ecd-coach.git
 cd ecd-coach
 pip install -r requirements.txt
 python main.py
-
+```
 
 ---
 
