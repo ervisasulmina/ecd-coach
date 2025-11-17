@@ -105,3 +105,20 @@ This project fits the **Agents for Good** track and contributes to education, ea
 
 ---
 
+## 🤖 Use of Gemini (Planned / Partial)
+
+ECD-Coach is designed to integrate Gemini as the LLM backbone for at least one of its agents.
+
+Planned integration:
+
+- **Milestone Analyst Agent**:
+  - Uses a custom tool (`ChildAgeDBTool`) to fetch a rough milestone description for the child’s age range.
+  - Sends the age, parent description, and milestone info to Gemini.
+  - Gemini generates a friendly, age-aware explanation and reminder that this is not medical advice.
+
+Optionally, Gemini can also be used for:
+
+- **Parent Mentor Agent**:
+  - Turning the parent’s concern into an empathic, supportive response.
+  - Preserving safety by working under the Safety Agent wrapper.
+
