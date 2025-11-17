@@ -1,0 +1,3 @@
+# ECD-Coach dependencies (to be refined)
+google-genai
+python-dotenv
