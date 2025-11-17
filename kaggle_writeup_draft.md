@@ -15,19 +15,89 @@
 
 ## 3. Problem
 
-(Here we will paste and slightly adapt the Problem section from the README.)
+Parents of toddlers are surrounded by information — blogs, forums, short videos, and conflicting advice on social media. Yet when a parent faces a real moment of uncertainty, like:
+
+- “Is this behavior normal for his age?”  
+- “Is this drawing advanced or typical?”  
+- “Why did he get pushed at the playground? What should I say to him?”  
+- “Am I doing enough for my child’s development?”
+
+they rarely find personalized, trustworthy, or emotionally supportive guidance.
+
+Most online information is:
+
+- Generic (doesn’t adapt to the child’s age, interests, or needs)
+- Scattered (requires reading many sources)
+- Not grounded in early childhood development frameworks
+- Not emotionally aware (parents often need reassurance, not clinical text)
+- Not persistent (never remembers your child’s history)
+
+Parents want to support their toddlers, but lack tools that combine:
+
+- Developmental understanding  
+- Personalized activity guidance  
+- Tracking progress over time  
+- Gentle emotional support  
+- Safe boundaries (avoid medical advice)  
+
+This gap is especially visible in the ages **2–5**, when developmental differences widen and parents compare their children more, often feeling guilt, worry, or confusion.
+
+ECD-Coach aims to fill this gap.
 
 ---
 
 ## 4. Solution Overview
 
-- Short description of the system (multi-agent + tools + memory)
-- Why agents, not just a single LLM
-- Short explanation of each agent:
-  - Milestone Analyst Agent
-  - Activity Planner Agent
-  - Parent Mentor Agent
-  - Safety Agent
+**ECD-Coach** is a multi-agent AI system designed to support parents of toddlers (ages 2–5) with personalized milestone explanations, play ideas, and empathetic guidance.
+
+The system uses a structured team of agents that collaborate:
+
+### **1. Milestone Analyst Agent**
+- Takes the child’s age and parent’s description (e.g., a drawing or new skill).
+- Uses a custom milestone tool (`ChildAgeDBTool`) to retrieve age ranges.
+- Combines the tool output with the parent description.
+- Generates a clear, non-diagnostic explanation.
+- Stores information in session memory (age, last behavior, interests).
+
+### **2. Activity Planner Agent**
+- Creates age-appropriate activities covering:
+  - fine motor  
+  - gross motor  
+  - language  
+  - pretend play  
+- Integrates the child’s interests (cars, animals, puzzles) from memory.
+- Adjusts suggestions based on simple constraints (e.g., indoor/outdoor).
+
+### **3. Parent Mentor Agent**
+- Responds to emotional concerns from parents.
+- Uses simple theme-based reasoning (worry, guilt, playground conflict, etc.).
+- Provides empathetic, warm, actionable suggestions.
+- Uses child profile data when helpful.
+
+### **4. Safety Agent**
+- Wraps around all other agents.
+- Ensures no unsafe medical instructions or diagnosis-like suggestions.
+- Redirects health concerns to safe, responsible guidance templates.
+
+---
+
+### Why Agents?
+
+A single LLM can answer isolated parenting questions, but it cannot:
+
+- Maintain a **consistent profile** of the child  
+- Separate milestone analysis from activity planning  
+- Provide emotional guidance while maintaining psychological safety  
+- Combine tools, memory, and context  
+- Provide structured, repeatable workflows  
+
+Using a **multi-agent architecture** allows ECD-Coach to:
+
+- Keep logic clean and modular  
+- Use specialized roles (analyst, planner, mentor, safety)  
+- Build richer workflows step-by-step  
+- Create more trustworthy, interpretable guidance  
+
 
 ---
 
