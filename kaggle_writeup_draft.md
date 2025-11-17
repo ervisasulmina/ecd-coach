@@ -103,13 +103,132 @@ Using a **multi-agent architecture** allows ECD-Coach to:
 
 ## 5. Architecture
 
-- High-level architecture explanation
-- Flow: user input → agents → tools → memory → safety
-- Mention:
-  - Multi-agent
-  - Tools
-  - Sessions & memory
-- (Optional) small ASCII diagram later
+ECD-Coach is built as a **multi-agent system** consisting of four collaborators: an analyst, a planner, a mentor, and a safety agent. Each agent plays a distinct, specialized role, and the system orchestrates them in a sequential flow.
+
+### 🧠 1. High-Level Architecture
+
+At a high-level, the system follows this pipeline:
+
+1. **User Input**  
+   Parent provides:  
+   - child's age  
+   - behavior/drawing description  
+   - emotional concern
+
+2. **Milestone Analyst Agent**  
+   - Fetches age-appropriate milestones using a custom tool (`ChildAgeDBTool`)  
+   - Combines them with the parent’s description  
+   - Writes to memory (child age, interests, last behavior)
+
+3. **Activity Planner Agent**  
+   - Reads the updated child profile from memory  
+   - Generates age-based activities (fine motor, gross motor, language, pretend play)  
+   - Incorporates interests (cars, animals, puzzles)  
+   - Follows constraints (e.g., indoor/outdoor)
+
+4. **Parent Mentor Agent**  
+   - Analyzes the emotional tone of the parent’s concern  
+   - Returns an empathetic message + 2–3 helpful actions  
+   - Also uses memory to personalize responses (age and context)
+
+5. **Safety Agent (Final Layer)**  
+   - Reviews output from all other agents  
+   - Ensures no unsafe medical advice  
+   - Rewrites responses if health concerns arise  
+   - Provides safe alternatives via `SafetyResponseTool`
+
+6. **Final Output**  
+   - A combined set of results:  
+     - Milestone explanation  
+     - Tailored activity ideas  
+     - Emotional support message  
+     - All validated by safety layer
+
+---
+
+### 🗂️ 2. Code Organization
+
+ecd-coach/
+├── main.py # Orchestrator: runs the multi-agent pipeline
+├── agents/
+│ ├── milestone_agent.py # Analyzes behavior vs. milestone ranges
+│ ├── activity_planner_agent.py # Suggests tailored activities
+│ ├── mentor_agent.py # Emotional support for parents
+│ └── safety_agent.py # Final safety review layer
+├── tools/
+│ ├── child_age_db_tool.py # Custom milestone database (hard-coded sample data)
+│ └── safety_response_tool.py # Safe medical wording templates
+├── memory/
+│ └── session_manager.py # Stores child profile and session state
+└── kaggle_writeup_draft.md
+
+---
+
+### 🔀 3. System Flow Diagram (ASCII)
+
+               ┌──────────────────────────┐
+               │         User Input        │
+               │ age, behavior, concern    │
+               └───────────────┬───────────┘
+                               │
+                     (1) Milestone Analyst
+                               │
+     ┌─────────────────────────┴─────────────────────────┐
+     │                                                   │
+         uses tool: ChildAgeDBTool updates memory
+                              │ 
+     └──────────────► milestone explanation ◄────────────┘
+                              │
+                    (2) Activity Planner
+                              │
+                   reads memory (age + interests)
+                              │
+                    personalized activities
+                              │
+                  (3) Parent Mentor Agent
+                              │
+                  empathetic emotional guidance
+                              │
+                    (4) Safety Agent Review
+                              │
+                              ▼
+                    Final Safe Output to User
+
+
+---
+
+### 🧩 4. Mapping to “Features to Include” (Competition Requirements)
+
+**Multi-agent system:**  
+- 4 cooperating agents: Milestone, Planner, Mentor, Safety  
+- Sequential flow + modular design
+
+**Tools:**  
+- Custom tool: `ChildAgeDBTool` (milestone database)  
+- Built-in safe template tool: `SafetyResponseTool`  
+- Optional (planned): Gemini tool integration
+
+**Memory:**  
+- `SessionManager` stores child profile (age, interests, last behavior)  
+- Agents read/write memory to provide consistent personalization  
+
+**Context Engineering:**  
+- Structured age buckets  
+- Clean agent separation avoids context overload  
+- Safety agent provides a final constraint-based filtering layer  
+
+**Observability (planned):**  
+- Logging points in `main.py` and agent layers  
+
+---
+
+### 🎯 5. Architectural Strengths
+
+- **Explainability:** clear roles instead of one giant LLM  
+- **Safety:** health concerns routed through dedicated logic  
+- **Personalization:** memory creates consistent profile over sessions  
+- **Extensibility:** new agents or age groups can easily be added  
+- **Modularity:** fits well with the philosophy of Google’s Agent Framework
 
 ---
 
