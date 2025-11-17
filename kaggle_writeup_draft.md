@@ -147,7 +147,7 @@ At a high-level, the system follows this pipeline:
 ---
 
 ### 🗂️ 2. Code Organization
-
+```
 ecd-coach/
 ├── main.py # Orchestrator: runs the multi-agent pipeline
 ├── agents/
@@ -161,7 +161,7 @@ ecd-coach/
 ├── memory/
 │ └── session_manager.py # Stores child profile and session state
 └── kaggle_writeup_draft.md # Kaggle final submission draft
-
+```
 ---
 
 ### 🔀 3. System Flow Diagram (ASCII)
