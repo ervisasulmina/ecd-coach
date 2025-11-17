@@ -453,15 +453,6 @@ Even partial Gemini integration qualifies the project for the **“Effective Use
 
 ---
 
-### **Deployment (Optional Bonus – 5 pts)**
-While not required, the architecture of ECD-Coach is compatible with:
-- Vertex AI Agent Engine  
-- Cloud Run deployment  
-- A lightweight FastAPI wrapper for inference  
-
-This demonstrates readiness for deployment even if not fully implemented.
-
----
 
 ### **YouTube Demo Video (10 pts)**
 Planned demo outline:
@@ -471,8 +462,6 @@ Planned demo outline:
 - System demo (milestone → activities → mentor → safety)  
 - Code structure overview  
 - How the agent was built  
-
-Combined with the multi-agent architecture and tool use, this positions ECD-Coach strongly for bonus scoring.
 
 ---
 
