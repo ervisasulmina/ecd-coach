@@ -147,7 +147,7 @@ At a high-level, the system follows this pipeline:
 ---
 
 ### 🗂️ 2. Code Organization
-
+```
 ecd-coach/
 ├── main.py # Orchestrator: runs the multi-agent pipeline
 ├── agents/
